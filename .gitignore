@@ -7,3 +7,6 @@ src/**.js
 coverage
 *.log
 yarn.lock
+/test
+/__test__/*
+!/__test__/*.ts

@@ -1,17 +1,30 @@
-// import AI_Interface from "../interfaces/AI";
+import type { AiConstructorProps, AiCompletionProps, AiResponseType } from "../interfaces/AI";
+import Processor from "./Processor";
 
-export default class AI {
-  private static isInitiated: boolean = false;
-  constructor () {
+export default class AI extends Processor {
+  public language: string;
+  public engineName: string;
+  
+  constructor ({ language = "id", engineName = "google" }: AiConstructorProps) {
+    super()
     
+    this.language = language;
+    this.engineName = engineName;
+    this.useEngine({
+      language: language,
+      name: engineName
+    });
   }
   
-  public static init (): void | boolean {
-    /*
-     * returned self class when it has been initiated
-     */
-    if (AI.isInitiated) return;
+  public async completion ({ question, type = "text", lotsOfResponse = 3, exceptions = [] }: AiCompletionProps): Promise<AiResponseType> {
+    const { engine } = this;
+    const answer = await engine.completion({
+      type: type,
+      lotsOfResponse: lotsOfResponse,
+      exceptions: exceptions,
+      question: question,
+    });
     
-    AI.prototype.constructor();
+    return answer;
   }
 }
